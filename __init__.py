@@ -1,13 +1,24 @@
-# This file is dual licensed under the terms of the Apache License, Version
-# 2.0, and the BSD License. See the LICENSE file in the root of this repository
-# for complete details.
+"""distutils
 
-from __future__ import annotations
+The main package for the Python Module Distribution Utilities.  Normally
+used from a setup script as
 
-from cryptography.__about__ import __author__, __copyright__, __version__
+   from distutils.core import setup
 
-__all__ = [
-    "__author__",
-    "__copyright__",
-    "__version__",
-]
+   setup (...)
+"""
+
+import sys
+import importlib
+
+__version__ = sys.version[: sys.version.index(' ')]
+
+
+try:
+    # Allow Debian and pkgsrc (only) to customize system
+    # behavior. Ref pypa/distutils#2 and pypa/distutils#16.
+    # This hook is deprecated and no other environments
+    # should use it.
+    importlib.import_module('_distutils_system_mod')
+except ImportError:
+    pass
